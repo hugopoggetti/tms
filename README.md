@@ -35,7 +35,7 @@ chmod +x tms
 export PATH="$PATH:/path/to/tms"
 
 # Add tmux bind
-bind-key g run-shell "/path/to/tms"
+bind-key t display-popup -E -w 80% -h 80% "bash -i ~/path/to/tms.sh"
 ```
 
 ## Configuration

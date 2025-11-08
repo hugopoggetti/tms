@@ -32,9 +32,9 @@ new_tmux_session()
 attach_tmux_session()
 {
     if ! tmux list-sessions &>/dev/null; then
+        echo "No tmux sessions running"
         return 1
     fi
-    
     session_name=$(tmux list-sessions -F "#{session_name}" | fzf --prompt="Select session: ")
     
     if [ -z "$session_name" ]; then
@@ -54,7 +54,7 @@ kill_tmux_session()
     if ! tmux list-sessions &>/dev/null; then
         return 1
     fi
-    session_name=$(tmux list-sessions -F "#{session_name}" | fzf --prompt="Kill session:")
+    session_name=$(tmux list-sessions -F "#{session_name}" | fzf --prompt="Kill session: ")
     if [ -z "$session_name" ]; then
         return 1
     fi
@@ -64,13 +64,13 @@ kill_tmux_session()
 main()
 {
     while true; do
-        choice=$(echo -e "NEW-SESSION\nATTACH-SESSION\nKILL-SESSION\nEXIT" | fzf --prompt="tmux session manager: ")
+        choice=$(echo -e "NEW-SESSION\nATTACH-SESSION\nKILL-SESSION\nEXIT" | fzf --prompt="Tmux Manager: ")
         case $choice in
             "NEW-SESSION") 
                 new_tmux_session
                 [ $? -eq 0 ] && break
                 ;;
-            "ATTACH") 
+            "ATTACH-SESSION") 
                 attach_tmux_session
                 [ $? -eq 0 ] && break
                 ;;
