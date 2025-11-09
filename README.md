@@ -7,6 +7,7 @@ A simple and interactive tmux session manager built with fzf.
 tms provides an easy way to manage your tmux sessions through an interactive interface:
 - Create new sessions from any directory
 - Attach to existing sessions
+- Detach from current session
 - Kill sessions
 - Automatically launches your editor in the first window
 
@@ -56,9 +57,10 @@ tms
 
 ### Menu Options
 
-- **NEW-SESSION**: Create a new session from a directory
+- **NEW**: Create a new session from a choosen directory
 - **ATTACH**: Attach to an existing session
-- **KILL-SESSION**: Kill a running session
+- **DETACH**: Detach from current session
+- **KILL**: Kill a running session
 - **EXIT**: Quit the manager
 
 Press `ESC` to cancel and return to the menu.
