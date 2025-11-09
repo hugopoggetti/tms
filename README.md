@@ -30,11 +30,13 @@ cd tms
 chmod +x tms
 ```
 
-3. Add to your PATH or create an alias:
+3. Add to your PATH or create tmux bind:
 ```bash
 # Add to your ~/.bashrc or ~/.zshrc
 export PATH="$PATH:/path/to/tms"
+```
 
+```tmux
 # Add tmux bind
 bind-key t display-popup -E -w 80% -h 80% "bash -i ~/path/to/tms.sh"
 ```

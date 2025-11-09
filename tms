@@ -1,14 +1,14 @@
 #!/usr/bin/env bash
 
 # const var to choose
-base_directory="$HOME/"
-editor="$EDITOR"
-default_tmux_first_window="1"
+BASE_DIRECTORY="$HOME/"
+EDITOR="$EDITOR"
+DEFAULT_TMUX_FIRST_WINDOW="1"
 
 # select directory and create new session
 new_tmux_session()
 {
-    selected=$(find $base_directory -mindepth 1 -maxdepth 6 -type d | fzf --algo=v2 --prompt="New session: ")
+    selected=$(find $BASE_DIRECTORY -mindepth 1 -maxdepth 6 -type d | fzf --algo=v2 --prompt="New session: ")
     
     if [ -z "$selected" ]; then
         return 1
@@ -18,9 +18,9 @@ new_tmux_session()
     session_path=$selected
     usr_shell=$(echo $SHELL)
     tmux new-session -Ad -s "$session_name" -c "$session_path" "$usr_shell"
-    tmux send-keys -t "$session_name:$default_tmux_first_window" "$editor" Enter
+    tmux send-keys -t "$session_name:$DEFAULT_TMUX_FIRST_WINDOW" "$EDITOR" Enter
     tmux new-window -t "$session_name:" -c "$session_path"
-    tmux select-window -t "$session_name:$default_tmux_first_window"
+    tmux select-window -t "$session_name:$DEFAULT_TMUX_FIRST_WINDOW"
     if [ -n "$TMUX" ]; then
         tmux switch-client -t "$session_name"
     else
@@ -76,8 +76,30 @@ detach_tmux_session()
     return 0
 }
 
+install()
+{
+    SCRIPT_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/$(basename "${BASH_SOURCE[0]}")"
+    intallation_promp="Do you wnat to install tms (y/n) ? If you don't want to see this message try tms --no-install "
+
+    if [ ! -f "/bin/tms" ]; then
+        choice=$(echo -e "YES\nNO" | fzf --prompt="$intallation_promp")
+        case "$choice" in 
+          YES) sudo cp "$SCRIPT_PATH" /bin/tms
+                sudo chmod +x /bin/tms
+                echo "tms installed successfully from $SCRIPT_PATH to /bin/tms" 
+              ;;
+          NO) return 0;;
+          * ) return 0;;
+        esac
+    fi
+}
+
 main()
 {
+    if [[ "$1" != "--no-install" ]]; then
+        install
+    fi
+
     while true; do
         choice=$(echo -e "NEW\nATTACH\nDETACH\nKILL\nEXIT" | fzf --prompt="tmux session manager: ")
         case $choice in
@@ -106,4 +128,4 @@ main()
     done
 }
 
-main
+main "$@"
