@@ -4,11 +4,12 @@
 BASE_DIRECTORY="$HOME/"
 EDITOR="$EDITOR"
 DEFAULT_TMUX_FIRST_WINDOW="1"
+INSTALL_PATH="/bin/tms"
 
 # select directory and create new session
 new_tmux_session()
 {
-    selected=$(find $BASE_DIRECTORY -mindepth 1 -maxdepth 6 -type d | fzf --algo=v2 --prompt="New session: ")
+    selected=$(find $BASE_DIRECTORY -mindepth 1 -maxdepth 8 -type d | fzf --algo=v2 --prompt="New session: ")
     
     if [ -z "$selected" ]; then
         return 1
@@ -84,7 +85,7 @@ install()
     if [ ! -f "/bin/tms" ]; then
         choice=$(echo -e "YES\nNO" | fzf --prompt="$intallation_promp")
         case "$choice" in 
-          YES) sudo cp "$SCRIPT_PATH" /bin/tms
+          YES) sudo cp "$SCRIPT_PATH" "$INSTALL_PATH"
                 sudo chmod +x /bin/tms
                 echo "tms installed successfully from $SCRIPT_PATH to /bin/tms" 
               ;;

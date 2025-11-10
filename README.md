@@ -11,6 +11,13 @@ tms provides an easy way to manage your tmux sessions through an interactive int
 - Kill sessions
 - Automatically launches your editor in the first window
 
+## Features
+
+- Interactive interface with fzf
+- Automatic editor launch in first window
+- Smart session switching (inside or outside tmux)
+- Simple navigation
+
 ## Prerequisites
 
 - tmux
@@ -22,20 +29,10 @@ tms provides an easy way to manage your tmux sessions through an interactive int
 1. Clone or download the script:
 ```bash
 git clone https://github.com/hugopoggetti/tms
-cd tms
+cd tms && chmod +x tms && ./tms
 ```
 
-2. Make the script executable:
-```bash
-chmod +x tms
-```
-
-3. Add to your PATH or create tmux bind:
-```bash
-# Add to your ~/.bashrc or ~/.zshrc
-export PATH="$PATH:/path/to/tms"
-```
-
+2. create tmux bind:
 ```tmux
 # Add tmux bind
 bind-key t display-popup -E -w 80% -h 80% "bash -i ~/path/to/tms.sh"
@@ -45,9 +42,10 @@ bind-key t display-popup -E -w 80% -h 80% "bash -i ~/path/to/tms.sh"
 
 Edit the variables at the top of the script:
 ```bash
-base_directory="$HOME/"              # Base directory for search
-editor="$EDITOR"                     # Editor to launch
-default_tmux_first_window="1"       # First window number
+BASE_DIRECTORY="$HOME/"          # Base directory for search
+EDITOR="$EDITOR"                 # Editor to launch
+DEFAULT_TMUX_FIRST_WINDOW="1"    # First tmux window id
+INSTALL_PATH="/bin/tms"          # Install path
 ```
 
 ## Usage
@@ -56,24 +54,6 @@ Run the script:
 ```bash
 tms
 ```
-
-### Menu Options
-
-- **NEW**: Create a new session from a choosen directory
-- **ATTACH**: Attach to an existing session
-- **DETACH**: Detach from current session
-- **KILL**: Kill a running session
-- **EXIT**: Quit the manager
-
-Press `ESC` to cancel and return to the menu.
-
-## Features
-
-- Interactive interface with fzf
-- Automatic editor launch in first window
-- Smart session switching (inside or outside tmux)
-- Simple navigation
-
 ## License
 
 MIT
