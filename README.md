@@ -47,13 +47,6 @@ EDITOR="$EDITOR"                 # Editor to launch
 DEFAULT_TMUX_FIRST_WINDOW="1"    # First tmux window id
 INSTALL_PATH="/bin/tms"          # Install path
 ```
-
-## Usage
-
-Run the script:
-```bash
-tms
-```
 ## License
 
 MIT
