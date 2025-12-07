@@ -4,12 +4,12 @@
 BASE_DIRECTORY="$HOME/"
 EDITOR="$EDITOR"
 DEFAULT_TMUX_FIRST_WINDOW="1"
-INSTALL_PATH="/bin/tms"
+INSTALL_PATH="/usr/bin/tms"
 
 # select directory and create new session
 new_tmux_session()
 {
-    selected=$(find $BASE_DIRECTORY -mindepth 1 -maxdepth 8 -type d | fzf --algo=v2 --prompt="New session: ")
+    selected=$(find $BASE_DIRECTORY -mindepth 1 -maxdepth 11 -type d | fzf --algo=v2 --prompt="New session: ")
     
     if [ -z "$selected" ]; then
         return 1
@@ -82,12 +82,12 @@ install()
     SCRIPT_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/$(basename "${BASH_SOURCE[0]}")"
     intallation_promp="Do you wnat to install tms (y/n) ? If you don't want to see this message try tms --no-install "
 
-    if [ ! -f "/bin/tms" ]; then
+    if [ ! -f "$INSTALL_PATH" ]; then
         choice=$(echo -e "YES\nNO" | fzf --prompt="$intallation_promp")
         case "$choice" in 
           YES) sudo cp "$SCRIPT_PATH" "$INSTALL_PATH"
-                sudo chmod +x /bin/tms
-                echo "tms installed successfully from $SCRIPT_PATH to /bin/tms" 
+                sudo chmod +x $INSTALL_PATH
+                echo "tms installed successfully from $SCRIPT_PATH to $INSTALL_PATH" 
               ;;
           NO) return 0;;
           * ) return 0;;
