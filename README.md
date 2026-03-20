@@ -2,7 +2,7 @@
 
 A simple and interactive tmux session manager built with fzf.
 
-<video src="https://github.com/hugopoggetti/tms/raw/master/doc/video.mp4" controls></video>
+https://github.com/user-attachments/assets/47950866-defb-456f-83d3-b0efadf0932b
 
 ## Description
 
