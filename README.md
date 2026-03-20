@@ -2,6 +2,8 @@
 
 A simple and interactive tmux session manager built with fzf.
 
+![](./doc/video.webm)
+
 ## Description
 
 tms provides an easy way to manage your tmux sessions through an interactive interface:
