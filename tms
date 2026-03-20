@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 
-# const var to choose
 BASE_DIRECTORY="$HOME/"
 EDITOR="$EDITOR"
 DEFAULT_TMUX_FIRST_WINDOW="1"
@@ -9,7 +8,7 @@ INSTALL_PATH="/usr/bin/tms"
 # select directory and create new session
 new_tmux_session()
 {
-    selected=$(find $BASE_DIRECTORY -mindepth 1 -maxdepth 11 -type d | fzf --algo=v2 --prompt="New session: ")
+    selected=$(find $BASE_DIRECTORY -mindepth 1 -maxdepth 11 -type d 2> /dev/null | fzf --algo=v2 --prompt="New session: ")
     
     if [ -z "$selected" ]; then
         return 1
@@ -18,10 +17,12 @@ new_tmux_session()
     session_name=$(basename "$selected")
     session_path=$selected
     usr_shell=$(echo $SHELL)
+
     tmux new-session -Ad -s "$session_name" -c "$session_path" "$usr_shell"
     tmux send-keys -t "$session_name:$DEFAULT_TMUX_FIRST_WINDOW" "$EDITOR" Enter
     tmux new-window -t "$session_name:" -c "$session_path"
     tmux select-window -t "$session_name:$DEFAULT_TMUX_FIRST_WINDOW"
+
     if [ -n "$TMUX" ]; then
         tmux switch-client -t "$session_name"
     else
@@ -80,7 +81,7 @@ detach_tmux_session()
 install()
 {
     SCRIPT_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/$(basename "${BASH_SOURCE[0]}")"
-    intallation_promp="Do you wnat to install tms (y/n) ? If you don't want to see this message try tms --no-install "
+    intallation_promp="Do you want to install tms (y/n) ? If you don't want to see this message try tms --no-install "
 
     if [ ! -f "$INSTALL_PATH" ]; then
         choice=$(echo -e "YES\nNO" | fzf --prompt="$intallation_promp")
