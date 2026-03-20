@@ -2,7 +2,7 @@
 
 A simple and interactive tmux session manager built with fzf.
 
-<video src="./doc/video.webm" controls></video>
+<video src="./doc/video.mp4" controls></video>
 
 ## Description
 
