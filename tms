@@ -2,7 +2,7 @@
 
 BASE_DIRECTORY="$HOME/"
 EDITOR="$EDITOR"
-DEFAULT_TMUX_FIRST_WINDOW="1"
+TMUX_BASE_INDEX="1"
 INSTALL_PATH="/usr/bin/tms"
 
 # select directory and create new session
@@ -19,9 +19,9 @@ new_tmux_session()
     usr_shell=$(echo $SHELL)
 
     tmux new-session -Ad -s "$session_name" -c "$session_path" "$usr_shell"
-    tmux send-keys -t "$session_name:$DEFAULT_TMUX_FIRST_WINDOW" "$EDITOR" Enter
+    tmux send-keys -t "$session_name:$TMUX_BASE_INDEX" "$EDITOR" Enter
     tmux new-window -t "$session_name:" -c "$session_path"
-    tmux select-window -t "$session_name:$DEFAULT_TMUX_FIRST_WINDOW"
+    tmux select-window -t "$session_name:$TMUX_BASE_INDEX"
 
     if [ -n "$TMUX" ]; then
         tmux switch-client -t "$session_name"
@@ -78,6 +78,17 @@ detach_tmux_session()
     return 0
 }
 
+# rename current session
+rename_tmux_session()
+{
+    if [ ! -n "$TMUX" ]; then
+        return 1
+    fi
+    choice=$(echo -e "" | fzf --prompt="Rename current session: " --print-query | tail -n1)
+    [ -z "$choice" ] && return 1
+    tmux rename-session -t "$(tmux display-message -p '#S')" "$choice"
+}
+
 install()
 {
     SCRIPT_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/$(basename "${BASH_SOURCE[0]}")"
@@ -103,7 +114,7 @@ main()
     fi
 
     while true; do
-        choice=$(echo -e "NEW\nATTACH\nDETACH\nKILL\nEXIT" | fzf --prompt="tmux session manager: ")
+        choice=$(echo -e "NEW\nATTACH\nDETACH\nRENAME\nKILL\nEXIT" | fzf --prompt="tmux session manager: ")
         case $choice in
             "NEW") 
                 new_tmux_session
@@ -115,6 +126,10 @@ main()
                 ;;
             "DETACH")
                 detach_tmux_session
+                [ $? -eq 0 ] && break
+                ;;
+            "RENAME")
+                rename_tmux_session
                 [ $? -eq 0 ] && break
                 ;;
             "KILL") 
